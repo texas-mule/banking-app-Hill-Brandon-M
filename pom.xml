@@ -3,4 +3,19 @@
   <groupId>com.revature</groupId>
   <artifactId>bank</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <name>Bank</name>
+  <description>Simple account-based banking application used to demonstrate basic aptitude with Java for Project 0 of the Revature (4/15/2019) Training program. </description>
+  <properties>
+      <maven.compiler.source>1.8</maven.compiler.source>
+      <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+      <!-- https://mvnrepository.com/artifact/org.json/json -->
+      <dependency>
+          <groupId>org.json</groupId>
+          <artifactId>json</artifactId>
+          <version>20180813</version>
+      </dependency>
+  </dependencies>
 </project>
