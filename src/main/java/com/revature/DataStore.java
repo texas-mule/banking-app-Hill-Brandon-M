@@ -1,7 +1,5 @@
 package com.revature;
 
-import java.io.FileDescriptor;
-
 /**
  * An interface for using objects to store persistent data.
  * @author Brandon Hill

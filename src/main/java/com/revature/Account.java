@@ -36,7 +36,7 @@ public class Account extends SynchronizedData<Integer> implements Accessible {
 	 * 	</tr>
 	 *
 	 */
-	private static enum state {		
+	protected static enum state {		
 		DISAPPROVED,
 		PENDING_APPROVAL,
 		CLEAR,
@@ -54,7 +54,7 @@ public class Account extends SynchronizedData<Integer> implements Accessible {
 	 */
 	private state status;
 	
-	private Account (Integer id, double balance, state status) {
+	protected Account (Integer id, double balance, state status) {
 		this.id = id;
 		this.balance = balance;
 		this.status = status;

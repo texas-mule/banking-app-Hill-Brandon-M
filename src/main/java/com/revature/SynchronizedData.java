@@ -1,14 +1,12 @@
 package com.revature;
 
-import java.io.Serializable;
-
 /**
  * An abstract class for data that is kept persistent.
  * 
  *
  * @param <ID> The type of data used by this class as a unique identifier.
  */
-public abstract class SynchronizedData<ID> implements Serializable, Accessible {
+public abstract class SynchronizedData<ID> implements Accessible {
 
 	protected static DataStore source = null;
 
