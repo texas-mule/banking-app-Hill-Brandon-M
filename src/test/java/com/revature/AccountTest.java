@@ -52,8 +52,8 @@ public class AccountTest extends Account {
 
 		Account b = new Account(1, 30.00, Account.state.CLEAR);
 		
-		assertTrue(b.transfer(10.00, a));		
-		assertTrue(a.getBalance() == b.getBalance());
+		assertTrue(b.transfer(10.00, a));
+		assertEquals(a.getBalance(), b.getBalance());
 	}
 
 }

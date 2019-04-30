@@ -11,23 +11,35 @@ public class UserTest {
 	
 	@Before
 	public void initialize () {
-		u = new User(1, "example", "password", User.AccessLevel.CLIENT);
+		u = new User(
+			1, 
+			"example", 
+			"password", 
+			User.AccessLevel.CLIENT, 
+			"John", 
+			"Doe", 
+			"XXX-XX-XXXX", 
+			"XXXX/XX/XX", 
+			"Somewhere", 
+			"(XXX)-XXX-XXXX"
+		);
 	}
 	
 	@Test
-	public void testGetUsername () {
+	public void testGetUsername () {		
 		assertEquals(u.getUsername(), "example");
 	}
 	
 	@Test
-	public void testCheckSetPassword () {
-		boolean r1 = u.checkPassword("password");
+	public void testGetSetPassword () {
+		String r1 = u.getPassword();
 		
-		u.setPassword("new", "password");
+		assertTrue(u.setPassword("new", "password"));
 		
-		boolean r2 = u.checkPassword("new");
+		String r2 = u.getPassword();
 		
-		assertTrue(r1 && r2);
+		assertEquals(r1, "password");
+		assertEquals(r2, "new");
 	}
 
 	@Test
@@ -38,5 +50,9 @@ public class UserTest {
 
 		assertTrue(u.getAuthorization() == User.AccessLevel.CLIENT);
 	}
-
+	
+	@Test
+	public void testGetSetAuthourization () {
+		fail("Not implemented");
+	}
 }

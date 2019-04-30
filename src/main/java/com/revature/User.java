@@ -1,96 +1,52 @@
 package com.revature;
 
+public class User implements Accessible {
 
-public class User extends SynchronizedData<Integer> implements Accessible {
-
-	protected enum AccessLevel {
+	protected static enum AccessLevel {
 		CLIENT, EMPLOYEE, ADMIN
 	}
-
-	private static int idAllocator = 0;
-
+	
+	private Integer id;
 	private String username;
 	private String password;
 	private AccessLevel authorization;
+	private String firstname;
+	private String lastname;
+	private String ssn;
+	private String birthdate;
+	private String address;
+	private String phone;	
 
-	/**
-	 * Constructs a User with the provided properties
-	 * 
-	 * @param id
-	 *            - The id of the User
-	 * @param username
-	 *            - The username of the User
-	 * @param password
-	 *            - The password of the User
-	 * @param authorization
-	 *            - The authorization level of the User
-	 */
-	protected User (Integer id, String username, String password, AccessLevel authorization) {
+	public User (Integer id, String username, String password, AccessLevel authorization, String firstname,
+			String lastname, String ssn, String birthdate, String address, String phone) {
+		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.authorization = authorization;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.ssn = ssn;
+		this.birthdate = birthdate;
+		this.address = address;
+		this.phone = phone;
 	}
 
+
+
+	
 	/**
 	 * Constructs a User with empty property fields
 	 */
 	public User () {
-		new User(-1, null, null, null);
+		this(null, null, null, null, null, null, null, null, null, null);
 	}
 
-	/**
-	 * Constructs a new User to be added to user base. If the data confirmations
-	 * do not match, the resultant User will have all its properties set to
-	 * null.
-	 * 
-	 * @param username
-	 *            - The username of the new User.
-	 * @param confirmUsername
-	 *            - A string used to confirm the choice of username.
-	 * @param password
-	 *            - The password for the new User.
-	 * @param confirmPassword
-	 *            - A string used to confirm the choice of password.
-	 */
-	public User (String username, String confirmUsername, String password, String confirmPassword) {
-		if (username != confirmUsername || password != confirmPassword) {
-			new User(idAllocator++, username, password, AccessLevel.CLIENT);
+	public Integer getId () { return id; }
 
-			// TODO: Define the behavior that adds new users to data storage
-			
-		} else {
-			new User();
-		}
-	}
-
-	/**
-	 * Retrieves User from the current user base using the login information.
-	 * 
-	 * If the username/password combination doesn't match, the User generated
-	 * will have all of its properties set to null.
-	 * 
-	 * @param username
-	 *            - The username of the User
-	 * @param password
-	 *            - The password of the User
-	 */
-	public User (String username, String password) {
-		// TODO: Define credential authentication behavior
-		new User();
-	}
-
-	// TODO: define personal data
-
-	/**
-	 * Checks a provided password with the password associated with this User.
-	 * 
-	 * @param guess
-	 *            - The password provided to be checked against the true
-	 *            	password
-	 * @return Whether the guessed password matches the true password or not.
-	 */
-	public boolean checkPassword (String guess) { return (guess == this.password); }
+	public String getUsername () { return username;	}
+	
+	public String getPassword () { return this.password; }
 
 	/**
 	 * Sets the password field to a new value. If the old password is guessed
@@ -112,11 +68,27 @@ public class User extends SynchronizedData<Integer> implements Accessible {
 		return false;
 	}
 
-	public Integer getId () { return id; }
-
-	public String getUsername () { return username;	}
-
 	public AccessLevel getAuthorization () { return this.authorization;	}
+	
+	public String getFirstname() { return this.firstname; }
+	
+	public void setFirstname (String firstname) { this.firstname = firstname; }
+	
+	public String getLastname() { return this.lastname; }
+	
+	public void setLastname (String lastname) { this.lastname = lastname; }
+	
+	public String getSsn() { return this.ssn; }
+	
+	public String getBirthdate () { return birthdate; }
+	
+	public String getAddress () { return address; }
+	
+	public void setAddress (String address) { this.address = address; }
+	
+	public String getPhone () { return phone; }
+	
+	public void setPhone (String phone) { this.phone = phone; }
 
 	@Override
 	public boolean readableBy (User user) {
@@ -149,11 +121,4 @@ public class User extends SynchronizedData<Integer> implements Accessible {
 				return false;
 		}
 	}
-
-	@Override
-	protected Integer generateId () {
-		return idAllocator++;
-		
-	}
-
 }

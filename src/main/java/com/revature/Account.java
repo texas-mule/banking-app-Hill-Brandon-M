@@ -1,9 +1,6 @@
 package com.revature;
 
-
-public class Account extends SynchronizedData<Integer> implements Accessible {
-	
-	
+public class Account {
 	
 	/**
 	 * Defines the state of the Account
@@ -47,35 +44,33 @@ public class Account extends SynchronizedData<Integer> implements Accessible {
 	/**
 	 * The current balance of this account.
 	 */
-	private double balance;
+	private Double balance;
 	
 	/**
 	 * The current status of this account.
 	 */
 	private state status;
+
+	private Integer id;
 	
-	protected Account (Integer id, double balance, state status) {
+	public Account (Integer id, Double balance, state status) {
 		this.id = id;
 		this.balance = balance;
 		this.status = status;
 	}
 
 	public Account () {
-		new Account(generateId(), 0.00, Account.state.PENDING_APPROVAL);
+		this(null, null, null);
 	}
 	
-	public Account (int id, User user) {
-		
-		if (this.readableBy(user)) {
-			// TODO: Define data access behavior
-		}
+	public Account (Integer id) {
 		
 	}
 	
 	public Integer getId () { return id; }
 
 	
-	public double getBalance () { return balance; }
+	public Double getBalance () { return balance; }
 
 	
 	public state getStatus () {	return status; }
@@ -83,59 +78,29 @@ public class Account extends SynchronizedData<Integer> implements Accessible {
 	
 	public void setStatus (state status) {	this.status = status; }
 	
-	public boolean deposit (double amount) {
-		//TODO: Implement Deposit
-		return false;
+	public boolean deposit (Double amount) {
+		if (amount <= 0) 
+			return false;
+		
+		this.balance += amount;
+		return true;
 	}
 	
-	public boolean withdraw (double amount) {
-		//TODO: Implement withdrawal
-		return false;
+	public boolean withdraw (Double amount) {
+		if (amount <= 0 || amount > this.getBalance()) 
+			return false;
+		
+		this.balance -= amount;
+		return true;
 	}
 	
-	public boolean transfer (double amount, Account dest) {
-		//TODO: Implement Transfer
-		return false;
-	}
-	
-	@Override
-	public boolean readableBy (User user) {
-
-		switch (user.getAuthorization()) {
-			case ADMIN: 		// Admins can read all user info
-			case EMPLOYEE: 		// Employees can read all user info
-				return true;
-			
-			case CLIENT: 		// Clients can only read their own info
-				AccessPermissions ap = this.access(user);
-				return (ap.canDeposit() || ap.canWithdraw());
-				
-			default:
-				return false;
-		}
+	public boolean transfer (Double amount, Account dest) {
+		if (amount <= 0 || amount > this.getBalance()) 
+			return false;
+		
+		this.balance -= amount;
+		dest.balance += amount;
+		return true;
 	}
 
-	@Override
-	public boolean writableBy (User user) {
-
-		switch (user.getAuthorization()) {
-			case ADMIN: 		// Admins can write to all Users
-				return true;
-			
-			case EMPLOYEE: 		// Employees can only write to self
-			case CLIENT: 		// Client can only write to self
-				AccessPermissions ap = this.access(user);
-				return (ap.canDeposit() && ap.canWithdraw());
-			
-			default:
-				return false;
-		}
-	}
-	
-	public AccessPermissions access (User user) { return new AccessPermissions(user, this);	}
-	
-	private static Integer idAllocator = 0;
-	
-	@Override
-	protected Integer generateId () { return idAllocator++; }	
 }
