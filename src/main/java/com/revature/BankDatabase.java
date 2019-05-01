@@ -410,8 +410,7 @@ public class BankDatabase {
 			
 		try {
 			if ((rs== null) || (!rs.first())){
-				output.add(null);
-				return output;
+				return null;
 			}
 				
 			

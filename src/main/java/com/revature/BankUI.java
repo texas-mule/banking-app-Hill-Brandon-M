@@ -72,7 +72,11 @@ public class BankUI {
 			
 			sb.append(UIMenu.indexOf(e) + ".) " + e.name + "\n");
 		}
-		sb.append("99.) Logout\n");
+		
+		if (this.currentUser != null) {
+			sb.append("99.) Logout\n");
+		}
+		
 		sb.append("100.) Exit \n");
 		
 		return sb.toString();
@@ -239,7 +243,7 @@ public class BankUI {
 		}
 		
 		try {
-			Integer id = new Integer(this.prompt("ID of desired user"));
+			Integer id = new Integer(this.prompt("User ID: "));
 			
 			User u = this.b.getUserInformation(currentUser, id);
 			
@@ -346,12 +350,13 @@ public class BankUI {
 	private void viewAccounts () {
 
 		ArrayList<Permissions> p = this.b.getAccessibleAccounts(currentUser);
-		if (p.isEmpty()) {
+		if (p.isEmpty() || p == null) {
 			System.out.println("No accounts accessible for this user.");
 		}
 		
 		StringBuilder sb = new StringBuilder();
 		for (Permissions i : p) {
+			if( i == null ) continue;
 			sb.append(i.getAccount().toString() + "\n");
 		}
 		

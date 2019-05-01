@@ -123,4 +123,8 @@ public class User implements Accessible {
 				return false;
 		}
 	}
+	
+	public String toString () {
+		return ("USER:[ id:" + this.id + ", username:" + this.username + ", password:" + this.password + ", name:" + this.firstname + " " + this.lastname + "]");
+	}
 }

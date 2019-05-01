@@ -21,7 +21,12 @@ public class Bank {
 	}
 	
 	public ArrayList<Permissions> getAccessibleAccounts (User u) {
-		return this.db.fetchPermissions(u);
+		ArrayList<Permissions> output = this.db.fetchPermissions(u);
+		
+		if (output.isEmpty())
+			return null;
+		
+		return output;
 	}
 	
 	public void close() {
