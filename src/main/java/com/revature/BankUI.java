@@ -72,15 +72,17 @@ public class BankUI {
 			
 			sb.append(UIMenu.indexOf(e) + ".) " + e.name + "\n");
 		}
-		
-		sb.append("-1.) Exit \n");
+		sb.append("99.) Logout\n");
+		sb.append("100.) Exit \n");
 		
 		return sb.toString();
 	}
 	
 	public Integer getCommand () {
 		String input;
+		
 		do {
+			System.out.println("What would you like to do?");
 			input = this.prompt(this.mainMenu());
 		} while (!StringUtils.isNumeric(input));
 		
@@ -150,7 +152,11 @@ public class BankUI {
 				this.cancel();
 				break;
 				
-			case (-1):
+			case 99:
+				this.currentUser = null;
+				break;
+				
+			case 100:
 				System.out.println("Exiting application...");
 				this.currentUser = null;
 				return true;
@@ -346,7 +352,7 @@ public class BankUI {
 		
 		StringBuilder sb = new StringBuilder();
 		for (Permissions i : p) {
-			sb.append(i.getAccount().toString());
+			sb.append(i.getAccount().toString() + "\n");
 		}
 		
 		System.out.println(sb.toString());		

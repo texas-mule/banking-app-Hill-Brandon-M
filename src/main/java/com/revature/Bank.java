@@ -31,6 +31,10 @@ public class Bank {
 	public boolean withdraw (User u, Account a, double amount) {
 		Permissions p = this.db.fetchPermissions(u, a);
 		double bal = a.getBalance();
+		if (a.getStatus() != Account.state.CLEAR) {
+			return false;
+		}
+		
 		if ((p.canWithdraw() && a.withdraw(amount)) || u.getAuthorization() == User.AccessLevel.ADMIN) {
 			Transaction t = new Transaction(
 				null, 
@@ -57,6 +61,9 @@ public class Bank {
 	public boolean deposit (User u, Account a, double amount) {
 		Permissions p = this.db.fetchPermissions(u, a);
 		double bal = a.getBalance();
+		if (a.getStatus() != Account.state.CLEAR) {
+			return false;
+		}
 		if ((p.canDeposit() && a.deposit(amount)) || u.getAuthorization() == User.AccessLevel.ADMIN) {
 			Transaction t = new Transaction(
 				null, 
@@ -85,6 +92,10 @@ public class Bank {
 		
 		Permissions p_src = this.db.fetchPermissions(u, src);
 		Permissions p_dst = this.db.fetchPermissions(u, dst);
+		
+		if (src.getStatus() != Account.state.CLEAR || dst.getStatus() != Account.state.CLEAR) {
+			return false;
+		}
 		
 		if ((p_src == null || p_dst == null) && u.getAuthorization() != User.AccessLevel.ADMIN ) {
 			return false;

@@ -174,7 +174,6 @@ public class BankDatabase {
 	
 	private void open () {
 		try {
-			System.out.print("Initializing database connection... ");
 			
 			this.STATEMENT_STORE_USER = conn.prepareStatement(SQL_STORE_USER, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			this.STATEMENT_RETRIEVE_USER_ID = conn.prepareStatement(SQL_RETRIEVE_USER_ID, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -200,7 +199,6 @@ public class BankDatabase {
 			
 			this.STATEMENT_RETRIEVE_USER_USERNAME = conn.prepareStatement(SQL_RETRIEVE_USER_USERNAME, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			
-			System.out.println("DONE.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

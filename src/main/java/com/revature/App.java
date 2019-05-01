@@ -11,7 +11,7 @@ public class App {
 		Bank bank = new Bank("MyBank", DEFAULT_URL, DEFAULT_USERNAME, DEFAULT_PASSWORD);
 		
 		BankUI ui = new BankUI(bank);
-		
+		System.out.println("MyBank");
 		while (!ui.select(ui.getCommand()));
 		
 		ui.close();
