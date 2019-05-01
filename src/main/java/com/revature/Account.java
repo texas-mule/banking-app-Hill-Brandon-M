@@ -38,7 +38,7 @@ public class Account {
 		PENDING_APPROVAL,
 		CLEAR,
 		FROZEN,
-		UNSYNCHRONIZED
+		CANCELLED
 	}	
 	
 	/**
@@ -101,6 +101,16 @@ public class Account {
 		this.balance -= amount;
 		dest.balance += amount;
 		return true;
+	}
+
+	public void setBalance (double balance) {
+
+		this.balance = balance;
+		
+	}
+	
+	public String toString() {
+		return ("[ id:" + this.id + ", balance: $" + this.balance + ", status: " + this.status.toString() + " ]");
 	}
 
 }

@@ -1,9 +1,11 @@
 package com.revature;
 
+import java.sql.Date;
+
 public class User implements Accessible {
 
 	protected static enum AccessLevel {
-		CLIENT, EMPLOYEE, ADMIN
+		UNIDENTIFIED, CLIENT, EMPLOYEE, ADMIN
 	}
 	
 	private Integer id;
@@ -13,12 +15,12 @@ public class User implements Accessible {
 	private String firstname;
 	private String lastname;
 	private String ssn;
-	private String birthdate;
+	private Date birthdate;
 	private String address;
 	private String phone;	
 
 	public User (Integer id, String username, String password, AccessLevel authorization, String firstname,
-			String lastname, String ssn, String birthdate, String address, String phone) {
+			String lastname, String ssn, Date birthdate, String address, String phone) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -80,7 +82,7 @@ public class User implements Accessible {
 	
 	public String getSsn() { return this.ssn; }
 	
-	public String getBirthdate () { return birthdate; }
+	public Date getBirthdate () { return birthdate; }
 	
 	public String getAddress () { return address; }
 	

@@ -1,5 +1,6 @@
 package com.revature;
 
+import java.sql.Timestamp;
 
 public class Transaction {
 	
@@ -15,16 +16,18 @@ public class Transaction {
 	private User user;	
 	private Types type;
 	private Double amount;
+	private Timestamp time;
 	private Account src;
 	private Account dst;
 	private States status;
 	private String memo;
 	
-	public Transaction (Integer id, User user, Types type, Double amount, Account src, Account dst, States status, String memo) {
+	public Transaction (Integer id, User user, Types type, Double amount, Timestamp timestamp, Account src, Account dst, States status, String memo) {
 		this.id = id;
 		this.user = user;
 		this.type = type;
 		this.amount = amount;
+		this.time = timestamp;
 		this.src = src;
 		this.dst = dst;
 		this.status = status;
@@ -32,7 +35,7 @@ public class Transaction {
 	}
 
 	public Transaction () {
-		this(null,null,null,null,null,null,null,null);
+		this(null,null,null,null,null,null,null,null,null);
 	}
 
 	
@@ -51,6 +54,8 @@ public class Transaction {
 	public Types getType () { return type; }
 
 	public Double getAmount () { return amount; }
+	
+	public Timestamp getTime () { return this.time; }
 	
 	public Account getSrc () { return src; }
 

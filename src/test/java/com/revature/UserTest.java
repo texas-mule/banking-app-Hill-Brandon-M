@@ -2,6 +2,10 @@ package com.revature;
 
 import static org.junit.Assert.*;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import org.junit.*;
 
 
@@ -10,7 +14,7 @@ public class UserTest {
 	User u;
 	
 	@Before
-	public void initialize () {
+	public void initialize () throws ParseException {
 		u = new User(
 			1, 
 			"example", 
@@ -19,7 +23,7 @@ public class UserTest {
 			"John", 
 			"Doe", 
 			"XXX-XX-XXXX", 
-			"XXXX/XX/XX", 
+			new Date(new SimpleDateFormat("MM-dd-yyyy").parse("11-11-1111").getTime()),
 			"Somewhere", 
 			"(XXX)-XXX-XXXX"
 		);

@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS Users (
 	u_firstname TEXT 			NOT NULL,
 	u_lastname 	TEXT 			NOT NULL,
 	u_ssn 		TEXT 	UNIQUE	NOT NULL,
-	u_birthdate DATE 			NOT NULL,
+	u_birthdate DATE 			NOT NULL	DEFAULT CURRENT_DATE,
 	u_address 	TEXT 			NOT NULL,
 	u_phone 	TEXT 			NOT NULL
 );
@@ -26,13 +26,14 @@ CREATE TABLE IF NOT EXISTS Permissions (
 );
 
 CREATE TABLE IF NOT EXISTS Transactions (
-	t_id 			SERIAL 							PRIMARY KEY,
-	t_u_id			INTEGER							REFERENCES 		Users 		(u_id),
-	t_type 			TEXT 				NOT NULL,
-	t_amount		DOUBLE PRECISION	NOT NULL,
-	t_src_acct_id 	INTEGER 			NOT NULL 	REFERENCES 		Accounts	(acct_id),
-	t_dst_acct_id 	INTEGER 			NOT NULL 	REFERENCES 		Accounts	(acct_id),
-	t_status		TEXT				NOT NULL,
+	t_id 			SERIAL 									PRIMARY KEY,
+	t_u_id			INTEGER									REFERENCES 		Users 		(u_id),
+	t_type 			TEXT 						NOT NULL,
+	t_amount		DOUBLE PRECISION			NOT NULL,
+	t_time			TIMESTAMP WITH TIME ZONE	NOT NULL	DEFAULT NOW(),
+	t_src_acct_id 	INTEGER 					NOT NULL 	REFERENCES 		Accounts	(acct_id),
+	t_dst_acct_id 	INTEGER 					NOT NULL 	REFERENCES 		Accounts	(acct_id),
+	t_status		TEXT						NOT NULL,
 	t_memo			TEXT
 );
 
