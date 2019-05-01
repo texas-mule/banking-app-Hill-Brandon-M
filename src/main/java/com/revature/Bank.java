@@ -99,6 +99,7 @@ public class Bank {
 		Permissions p_dst = this.db.fetchPermissions(u, dst);
 		
 		if (src.getStatus() != Account.state.CLEAR || dst.getStatus() != Account.state.CLEAR) {
+			System.err.println("Non-approved accounts used!");
 			return false;
 		}
 		
@@ -127,6 +128,7 @@ public class Bank {
 			return true;
 			
 		} else {
+			System.err.println("Transfer failed");
 			src.setBalance(bal_src);
 			dst.setBalance(bal_dst);
 			return false;
