@@ -3,7 +3,35 @@ package com.revature;
 import java.sql.Date;
 
 public class User implements Accessible {
-
+	
+	/**
+	 * Indicates the level of authorization given to this user. Can be one of the following values:
+	 * <table>
+	 * 	<tr>
+	 * 		<td>UNIDENTIFIED</td>
+	 * 		<td>
+	 * 			User is not identified and should not be permitted to access any application 
+	 * 			functions other than authentication.
+	 * 		</td>
+	 * 	</tr>
+	 * 	<tr>
+	 * 		<td>CLIENT</td>
+	 * 		<td>User is a normal client and can access the customer-focused features of the application only.</td>
+	 * 	</tr>
+	 * 	<tr>
+	 * 		<td>EMPLOYEE</td>
+	 * 		<td>
+	 * 			User is an employee of the bank, and should have access to customer-focused 
+	 * 			features and lower-level management features.
+	 * 		</td>
+	 * 	</tr>
+	 * 	<tr>
+	 * 		<td>ADMIN</td>
+	 * 		<td>User is a system administrator, and should have access to all features of the application.</td>
+	 * 	</tr>
+	 * </table>
+	 *
+	 */
 	protected static enum AccessLevel {
 		UNIDENTIFIED, CLIENT, EMPLOYEE, ADMIN
 	}
@@ -33,9 +61,6 @@ public class User implements Accessible {
 		this.address = address;
 		this.phone = phone;
 	}
-
-
-
 	
 	/**
 	 * Constructs a User with empty property fields
@@ -91,7 +116,7 @@ public class User implements Accessible {
 	public String getPhone () { return phone; }
 	
 	public void setPhone (String phone) { this.phone = phone; }
-
+	
 	@Override
 	public boolean readableBy (User user) {
 
@@ -124,6 +149,7 @@ public class User implements Accessible {
 		}
 	}
 	
+	@Override
 	public String toString () {
 		return ("USER:[ id:" + this.id + ", username:" + this.username + ", password:" + this.password + ", name:" + this.firstname + " " + this.lastname + "]");
 	}

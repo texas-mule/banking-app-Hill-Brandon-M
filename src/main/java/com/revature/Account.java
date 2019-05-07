@@ -45,10 +45,7 @@ public class Account {
 	 * The current balance of this account.
 	 */
 	private Double balance;
-	
-	/**
-	 * The current status of this account.
-	 */
+
 	private state status;
 
 	private Integer id;
@@ -78,6 +75,13 @@ public class Account {
 	
 	public void setStatus (state status) {	this.status = status; }
 	
+	/**
+	 * Increases account balance after checking for invalid input.
+	 * 
+	 * @param amount - the amount to deposit
+	 * @return true if the deposit was successful, and false if the 
+	 * amount to deposit was invalid. (ex: amount <= 0)
+	 */
 	public boolean deposit (Double amount) {
 		if (amount <= 0) 
 			return false;
@@ -86,6 +90,13 @@ public class Account {
 		return true;
 	}
 	
+	/**
+	 * Decreases account balance after checking for overdrawing.
+	 * 
+	 * @param amount - the amount to withdraw
+	 * @return true if the withdrawal was successful, and false if the 
+	 * amount to deposit was invalid. (ex: amount <= 0)
+	 */
 	public boolean withdraw (Double amount) {
 		if (amount <= 0 || amount > this.getBalance()) 
 			return false;
@@ -94,6 +105,14 @@ public class Account {
 		return true;
 	}
 	
+	/**
+	 * Moves money from this account to another after checking for invalid input.
+	 * 
+	 * @param amount - the amount to transfer
+	 * @param dest - the destination account
+	 * @return true of the transfer was successful, false if the input given is invalid.
+	 * (ex: amount > this.getBalance)
+	 */
 	public boolean transfer (Double amount, Account dest) {
 		if (amount <= 0 || amount > this.getBalance()) 
 			return false;
@@ -109,8 +128,9 @@ public class Account {
 		
 	}
 	
+	@Override
 	public String toString() {
-		return ("[ id:" + this.id + ", balance: $" + this.balance + ", status: " + this.status.toString() + " ]");
+		return ("ACCOUNT:[ id:" + this.id + ", balance: $" + this.balance + ", status: " + this.status.toString() + " ]");
 	}
 
 }

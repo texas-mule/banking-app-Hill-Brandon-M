@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 public class BankDatabase {
 	private Connection conn = null;
+	private String url;
+	private String username;
+	private String password;
 	
 	private static final String SQL_STORE_USER = 
 			"INSERT INTO Users "
@@ -172,8 +175,14 @@ public class BankDatabase {
 		}
 	}
 	
-	private void open () {
+	/**
+	 * Opens the database connection if one is not already open and initializes 
+	 * the prepared statements for this database.
+	 */
+	public void open () {
 		try {
+			if (this.conn == null || this.conn.isClosed())
+				this.conn = DriverManager.getConnection(this.url, this.username, this.password);
 			
 			this.STATEMENT_STORE_USER = conn.prepareStatement(SQL_STORE_USER, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			this.STATEMENT_RETRIEVE_USER_ID = conn.prepareStatement(SQL_RETRIEVE_USER_ID, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -204,6 +213,9 @@ public class BankDatabase {
 		}
 	}
 	
+	/**
+	 * Closes the database connection if the connection is still open.
+	 */
 	public void close () {
 		try {
 			if (this.conn.isClosed())
@@ -217,6 +229,11 @@ public class BankDatabase {
 		}
 	}
 	
+	/**
+	 * Stores the given user into the database.
+	 * @param obj - the user to store
+	 * @return The primary key ID associated with the user on the database, or 0 if the operation failed.
+	 */
 	public Integer storeUser (User obj) {
 		if (obj == null)
 			return 0;
@@ -254,6 +271,11 @@ public class BankDatabase {
 		return 0;
 	}
 	
+	/**
+	 * Retrieves a user from the database by looking up an ID
+	 * @param id - the primary key ID that is associated with the desired user. 
+	 * @return The user associated with the given ID, or null if none was found.
+	 */
 	public User fetchUser (Integer id) {
 		ResultSet rs;			
 		try {
@@ -265,9 +287,20 @@ public class BankDatabase {
 			rs = null;
 		}
 		
-		return parseUsers(rs).get(0);
+		ArrayList<User> u = parseUsers(rs);
+		if(u.isEmpty())
+			return null;
+		
+		return u.get(0);
 	}
 	
+	/**
+	 * Retrieves a user from the database by looking up a username-password combination
+	 * 
+	 * @param username - the username corresponding to the desired user
+	 * @param password - the password corresponding to the given username
+	 * @return The user associated with the given credentials, or null if none was found.
+	 */
 	public User fetchUser (String username, String password) {
 		ResultSet rs;
 		try {
@@ -280,21 +313,24 @@ public class BankDatabase {
 			rs = null;
 		}
 		
-		ArrayList<User> users = parseUsers(rs);
+		ArrayList<User> u = parseUsers(rs);
 		
-		if (users.isEmpty()) {
+		if (u.isEmpty())
 			return null;
-		} else {
-			return users.get(0);
-		}
+		
+		return u.get(0);
 	}
 	
+	/**
+	 * Parses a database result set to provide a list of User objects obtained from said list 
+	 * @param rs - the result set to parse
+	 * @return The list of users corresponding to the provided data
+	 */
 	private static ArrayList<User> parseUsers (ResultSet rs) {
 		ArrayList<User> output = new ArrayList<>();
 		try {
 			if ((rs == null) || (!rs.first())) {
-				output.add(null);
-				return output;
+				return new ArrayList<>();
 			}
 			
 			do {
@@ -321,9 +357,14 @@ public class BankDatabase {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return new ArrayList<>();
 	}
 	
+	/**
+	 * Retrieves an account from the database by looking up its primary key ID.
+	 * @param id - the primary key ID associated with the desired account
+	 * @return The account associated with the provided ID, or null if none was found.
+	 */
 	public Account fetchAccount (Integer id) {
 		ResultSet rs;			
 		try {
@@ -335,9 +376,18 @@ public class BankDatabase {
 			rs = null;
 		}
 		
-		return parseAccounts(rs).get(0);
+		ArrayList<Account> a = parseAccounts(rs);
+		if(a.isEmpty())
+			return null;
+		
+		return a.get(0);
 	}
 	
+	/**
+	 * Retrieves a list of all accounts on the database with a specified status.
+	 * @param status - the account status to search for.
+	 * @return The list of all accounts with the provided status.
+	 */
 	public ArrayList<Account> fetchAccounts (Account.state status) {
 		ResultSet rs;
 		try {
@@ -353,6 +403,12 @@ public class BankDatabase {
 		return new ArrayList<>();
 	}
 	
+	/**
+	 * Stores a provided account to the database.
+	 * 
+	 * @param obj - the account to store
+	 * @return The primary key ID associated with the stored account, or 0 if the operation failed.
+	 */
 	public Integer storeAccount (Account obj) {			
 		if (obj == null) 
 			return 0;
@@ -383,6 +439,11 @@ public class BankDatabase {
 		return 0;
 	}
 	
+	/**
+	 * Creates a new Account on the database.
+	 * 
+	 * @return The new account.
+	 */
 	public Account newAccount () {
 		try {
 			this.STATEMENT_INIT_ACCOUNT.setDouble(1, 0.00);
@@ -400,19 +461,33 @@ public class BankDatabase {
 		return null;
 	}
 	
+	/**
+	 * Parses a database result set to retrieve the corresponding account data.
+	 * 
+	 * @param rs - the result set to parse
+	 * @return The list of accounts corresponding to the result set.
+	 */
 	private static ArrayList<Account> parseAccounts (ResultSet rs) {
 		return parseAccounts(rs, "");
 	}
 	
+	/**
+	 * Parses a database result set to retrieve the corresponding account data.
+	 * 
+	 * @param rs 	 - 	the result set to parse
+	 * @param prefix - 	the prefix appended to the column names 
+	 * 				 	(used to differentiate between multiple accounts in a result set)
+	 * 
+	 * @return The list of accounts corresponding to the result set.
+	 */
 	private static ArrayList<Account> parseAccounts (ResultSet rs, String prefix) {
 		
 		ArrayList<Account> output = new ArrayList<>(); 
 			
 		try {
 			if ((rs== null) || (!rs.first())){
-				return null;
-			}
-				
+				return new ArrayList<>();
+			}				
 			
 			do {
 				output.add(
@@ -432,9 +507,14 @@ public class BankDatabase {
 		}	
 		
 		
-		return null;
+		return new ArrayList<>();
 	}
 	
+	/**
+	 * Retrieves all account access permissions for a provided user.
+	 * @param u - the user to check for
+	 * @return The list of all permissions belonging to the provided user.
+	 */
 	public ArrayList<Permissions> fetchPermissions (User u) {
 		
 		try {
@@ -448,6 +528,11 @@ public class BankDatabase {
 		return new ArrayList<>();
 	}
 	
+	/**
+	 * Retrieves all account access permissions for a provided account.
+	 * @param a - the account to check for
+	 * @return The list of all permissions corresponding to the provided account.
+	 */
 	public ArrayList<Permissions> fetchPermissions (Account a) {
 		
 		try {
@@ -462,6 +547,12 @@ public class BankDatabase {
 		return new ArrayList<>();
 	}
 	
+	/**
+	 * Retrieves the account access permissions corresponding to a user-account combination
+	 * @param u - the user to check for
+	 * @param a - the account to check for
+	 * @return The provided user's access permissions for the provided account
+	 */
 	public Permissions fetchPermissions (User u, Account a) {
 		
 		Permissions output;
@@ -487,8 +578,13 @@ public class BankDatabase {
 		return output;
 	}
 	
+	/**
+	 * Creates a new permissions entry from an in-app permissions object
+	 * @param p - The permissions to add to the database
+	 * @return The primary key ID given to the new Permissions entry.
+	 */
 	public Integer initPermissions (Permissions p) {
-if (p == null) return 0;
+		if (p == null) return 0;
 		
 		try {
 			this.STATEMENT_INIT_PERMISSIONS.setInt(1, p.getUser().getId());
@@ -506,6 +602,11 @@ if (p == null) return 0;
 		return null;
 	}
 	
+	/**
+	 * Stores a permissions entry to the database
+	 * @param p - the permissions data to store
+	 * @return The primary key ID corresponding to the database entry.
+	 */
 	public Integer storePermissions (Permissions p) {
 		
 		if (p == null) return 0;
@@ -526,6 +627,11 @@ if (p == null) return 0;
 		return null;
 	}
 	
+	/**
+	 * Parses a result set for permissions data.
+	 * @param rs - the result set to parse.
+	 * @return The list of permissions extracted from the provided result set.
+	 */
 	private static ArrayList<Permissions> parsePermissions (ResultSet rs) {
 		ArrayList<Permissions> output = new ArrayList<>();
 		
@@ -559,20 +665,35 @@ if (p == null) return 0;
 		return output;
 	}
 	
-	public ArrayList<Transaction> fetchTransactions (Integer id) {
+	/**
+	 * Retrieves a transaction from the database by looking up its primary key ID
+	 * @param id - the ID of the desired transaction
+	 * @return The transaction corresponding to the provided ID, or null if non was found.
+	 */
+	public Transaction fetchTransaction (Integer id) {
 		
 		try {
 			this.STATEMENT_RETRIEVE_TRANSACTION_ID.setInt(1, id);
 			ResultSet rs = this.STATEMENT_RETRIEVE_TRANSACTION_ID.executeQuery();
-			return BankDatabase.parseTransactions(rs);
+			ArrayList<Transaction> t = parseTransactions(rs);
+			
+			if (t.isEmpty())
+				return null;
+			
+			return t.get(0);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return new ArrayList<>();		
+		return null;		
 	}
 	
+	/**
+	 * Retrieves all transactions made by a provided user from the database
+	 * @param u - the user to check for
+	 * @return The transactions made by the the provided user.
+	 */
 	public ArrayList<Transaction> fetchTransactions (User u) {
 		
 		try {
@@ -587,6 +708,11 @@ if (p == null) return 0;
 		return new ArrayList<>();		
 	}
 	
+	/**
+	 * Retrieves all transactions done on a provided account.
+	 * @param a - the account to check for
+	 * @return The transactions done on the provided account.
+	 */
 	public ArrayList<Transaction> fetchTransactions (Account a) {
 		
 		try {
@@ -602,6 +728,11 @@ if (p == null) return 0;
 		return new ArrayList<>();	
 	}
 	
+	/**
+	 * Stores a transaction in the database
+	 * @param t - the transaction to store
+	 * @return The primary key ID associated with the transaction, or 0 if the operation failed.
+	 */
 	public Integer storeTransaction (Transaction t) {
 		
 		if (t == null)
@@ -629,6 +760,11 @@ if (p == null) return 0;
 		return 0;
 	}
 	
+	/**
+	 * Parses a result set and extracts the transaction data contained within it.
+	 * @param rs - the result set to parse
+	 * @return The list of transactions extracted from the given result set.
+	 */
 	private static ArrayList<Transaction> parseTransactions (ResultSet rs) {
 		
 		ArrayList<Transaction> output = new ArrayList<>();
@@ -639,8 +775,7 @@ if (p == null) return 0;
 			ArrayList<Account> dst = BankDatabase.parseAccounts(rs, "dst_");
 			
 			if ((rs == null) || (!rs.first())) {
-				output.add(null);
-				return output;
+				return new ArrayList<>();
 			}
 				
 
@@ -668,6 +803,11 @@ if (p == null) return 0;
 		return output;		
 	}
 	
+	/**
+	 * Checks the database for a given username to determine if that username is free to use
+	 * @param username - the username to check for
+	 * @return True if the username is not used by any accounts, or false if the username already exists.
+	 */
 	public boolean usernameAvailable (String username) {
 		try {
 			this.STATEMENT_RETRIEVE_USER_USERNAME.setString(1, username);

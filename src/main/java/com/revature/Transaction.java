@@ -4,10 +4,30 @@ import java.sql.Timestamp;
 
 public class Transaction {
 	
+	/**
+	 * Defines the types of transactions:
+	 * 
+	 * <ul>
+	 * 	<li>WITHDRAW for withdrawals</li>
+	 * 	<li>DEPOSIT for deposits</li>
+	 * 	<li>TRANSFER for transfers</li>
+	 * </ul>
+	 *
+	 */
 	public static enum Types {
 		WITHDRAW, DEPOSIT, TRANSFER
 	}
 	
+	/**
+	 * Defines the state of a transaction:
+	 * 
+	 * <ul>
+	 * 	<li>PENDING for transactions waiting for approval.</li>
+	 * 	<li>APPROVED for transactions that have already been approved.</li>
+	 * 	<li>DENIED for transactions that have been denied by the bank</li>
+	 * </ul>
+	 *
+	 */
 	public static enum States {
 		PENDING, APPROVED, DENIED
 	}
