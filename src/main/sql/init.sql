@@ -37,4 +37,8 @@ CREATE TABLE IF NOT EXISTS Transactions (
 	t_memo			TEXT
 );
 
+INSERT INTO Users (u_username, u_password, u_auth, u_firstname, u_lastname, u_ssn, u_address, u_phone)
+VALUES ('admin', 'password', 'ADMIN', 'ADMIN', 'USER', '', '', '')
+ON CONFLICT (u_username) DO NOTHING;
+
 COMMIT;
