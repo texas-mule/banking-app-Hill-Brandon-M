@@ -1,4 +1,4 @@
-package com.revature;
+package com.revature.bank;
 
 import java.sql.Timestamp;
 

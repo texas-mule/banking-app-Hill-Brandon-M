@@ -1,4 +1,4 @@
-package com.revature;
+package com.revature.bank;
 
 import java.sql.Date;
 
@@ -32,7 +32,7 @@ public class User implements Accessible {
 	 * </table>
 	 *
 	 */
-	protected static enum AccessLevel {
+	public static enum AccessLevel {
 		UNIDENTIFIED, CLIENT, EMPLOYEE, ADMIN
 	}
 	

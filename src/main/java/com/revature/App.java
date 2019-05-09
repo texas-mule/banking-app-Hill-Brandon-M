@@ -1,5 +1,7 @@
 package com.revature;
 
+import com.revature.bank.Bank;
+
 public class App {
 	
 	private static final String DEFAULT_URL = "jdbc:postgresql://localhost:5432/project_0";

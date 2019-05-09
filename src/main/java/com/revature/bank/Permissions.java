@@ -1,4 +1,4 @@
-package com.revature;
+package com.revature.bank;
 
 public class Permissions {
 	private Integer id;

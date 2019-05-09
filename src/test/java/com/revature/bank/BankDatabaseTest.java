@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.revature;
+package com.revature.bank;
 
 import static org.junit.Assert.*;
 

@@ -7,7 +7,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import org.apache.commons.lang3.StringUtils;;
+import org.apache.commons.lang3.StringUtils;
+
+import com.revature.bank.Account;
+import com.revature.bank.Bank;
+import com.revature.bank.Permissions;
+import com.revature.bank.User;;
 
 public class BankUI {
 	private Console c;	
